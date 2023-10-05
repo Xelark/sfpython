@@ -1,21 +1,38 @@
-persons = int(input("Введите количество посетителей (количество должно быть больше 0):"))
-summa = 0
 
-for i in range(persons):
-    age = int(input("Введите возраст посетителя (возраст должен быть больше 0):"))
-    if 1 <= age < 18:
-        summa += 0
-        print("Посетителям меньше 18 - проход бесплатно!")
-        print("Ваша текущая сумма покупки:", summa, "рублей!")
-    elif 18 <= age < 25:
-        summa += 990
-        print("Билет добавлен, стоимость 990 рублей")
-        print("Ваша текущая сумма покупки:", summa, "рублей!")
-    elif age >= 25:
-        summa += 1390
-        print("Билет добавлен, стоимость 1390 рублей")
-        print("Ваша текущая сумма покупки:", summa, "рублей!")
+# Сортировка пузырьком
+def sort(array):
+    for i in range(len(array)):
+        for j in range(len(array) - i - 1):
+            if array[j] > array[j + 1]:
+                array[j], array[j + 1] = array[j + 1], array[j]
+    return array
 
-if persons < 4:
-    print("Ваша итоговая сумма к оплате: ", summa, "рублей!")
-else: print("Ваша сумма к оплате с учетом скидки 10% за количество билетов: ", summa - summa // 10, "рублей!")
+#Двоичный поиск
+def binary_search(array, element, left, right):
+    if left > right:  # если левая граница превысила правую,
+        return False  # значит элемент отсутствует
+
+    middle = (right + left) // 2  # находим середину
+    if array[middle - 1] < element and element <= array[middle]:
+        return middle  # возвращаем индекс если в середине
+    elif element < array[middle]:  # если элемент меньше элемента в середине
+        # рекурсивно ищем в левой половине
+        return binary_search(array, element, left, middle - 1)
+    else:  # или ищем в правой
+        return binary_search(array, element, middle + 1, right)
+
+spisok = input("Введите последовательность чисел через пробел: ")
+element = int(input("Введите любое число: "))
+massiv = list(map(int, spisok.split()))
+print(massiv)
+massiv_new = sort(massiv)
+left, right = massiv_new[0], massiv_new[-1]
+print(left)
+print(right)
+
+print(massiv_new)
+
+if element < left or element > right:
+    print("Нет числа")
+else: print(binary_search(massiv_new, element, 0, len(massiv_new) - 1))
+
